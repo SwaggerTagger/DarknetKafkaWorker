@@ -11,6 +11,7 @@ Environment Variable | Default Value
 `DARKNET_EXECUTABLE` | `/darknet/darknet`
 `KAFKA_INCOMING_TOPIC` | `incoming-pics`
 `KAFKA_DESTINATION_TOPIC` | `predictions`
+`KAFKA_STATUS_TOPIC` | `classification-status`
 `KAFKA_CONSUMER_GROUP` | `tagger-workers`
 `DARKNET_WORKING_DIR` | `/darknet`
 
@@ -26,6 +27,7 @@ The Worker expects incoming messages in `KAFKA_INCOMING_TOPIC` to have a non-nul
 Every additional Json Key Value Pair is ignored.
 
 ### Outgoing Messages
+#### Predictions (`KAFKA_DESTINATION_TOPIC`)
 The Worker will put classification results into `KAFKA_DESTINATION_TOPIC` with the same keyId as the incoming message and the following json format:
 ```json
 {
@@ -67,8 +69,20 @@ The Worker will put classification results into `KAFKA_DESTINATION_TOPIC` with t
   ],
   "time": 38.847912
 }
-
 ```
+#### Status (`KAFKA_STATUS_TOPIC`)
+Status updates are correlated with the image they relate to using via the keyId and are in the following format:
+```json
+{ "status": "CLASSIFICATION_STARTING" }
+```
+where the value of status may be one of these keywords:
+
+Environment Variable | Default Value 
+--- | ---
+`CLASSIFICATION_STARTING` | `emitted directly before classification with darknet begins`
+`CLASSIFICATION_FAILED_INVALID_INPUT` | `the message coming from kafka is malformed`
+`CLASSIFICATION_FAILED_DARKNET_FAILED` | `darknet returned a nonzero exit code. Messages with this status also have "stdout" and "stderr" properties for debugging purposes.`
+`CLASSIFICATION_FAILED_UNKNOWN` | `sent when un unknown error occurs. the worker will die immediately after this status update is placed, because this error message indicated something is going seriously wrong`
 
 ## Build Container
 ```bash
