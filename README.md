@@ -77,7 +77,7 @@ Status updates are correlated with the image they relate to using via the keyId 
 ```
 where the value of status may be one of these keywords:
 
-Environment Variable | Default Value 
+Keyword | Meaning 
 --- | ---
 `CLASSIFICATION_STARTING` | `emitted directly before classification with darknet begins`
 `CLASSIFICATION_FAILED_INVALID_INPUT` | `the message coming from kafka is malformed`
