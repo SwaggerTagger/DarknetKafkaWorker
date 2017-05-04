@@ -1,5 +1,5 @@
 # Tagger Worker
-This python script will connect to Kafka, digest incoming darknet classification tasks from an input topic, and put the results into an output topic.
+This python script will connect to Kafka, digest incoming darknet classification tasks from an input topic, classify them using a [slightly modified version](https://github.com/SwaggerTagger/darknet) of [darknet YOLO](https://pjreddie.com/darknet/yolo/) and put the results into an output topic.
 
 ## Configuration
 Configuration works via the following Environment Variables:
