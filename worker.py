@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import json
 import urllib.request
+import urllib.error
 
 log = logging.getLogger(__name__)
 
@@ -159,6 +160,12 @@ if __name__ == '__main__':
         except binascii.Error:
             log.info('Received Invalid Message. Sending error to %s (key: %s)', status_topic, message.key)
             send_to_kafka(producer, status_topic, message.key, KAFKA_STATUS_FAILED_INVALID_MESSAGE)
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                log.info('Got 404 Error; Going to ignore this message.')
+                send_to_kafka(producer, status_topic, message.key, KAFKA_STATUS_FAILED_INVALID_MESSAGE)
+            else:
+                raise e
         except ValueError:
             pass
         except Exception as e:
