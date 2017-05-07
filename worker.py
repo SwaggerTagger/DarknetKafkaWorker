@@ -86,7 +86,7 @@ def classify(message, darknet_cwd, cmd, darknet_cmd):
     log.debug('parsing command output into json')
     
     try:
-        json.loads(out)
+        return json.loads(out)
     except ValueError:
         log.info(
             'Darknet returned invalid json, ignoring this for now.')
