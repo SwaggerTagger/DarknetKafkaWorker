@@ -71,7 +71,7 @@ The Worker will put classification results into `KAFKA_DESTINATION_TOPIC` with t
 }
 ```
 #### Status (`KAFKA_STATUS_TOPIC`)
-Status updates are correlated with the image they relate to using via the keyId and are in the following format:
+Status updates are correlated with the image they relate to using the keyId and are in the following format:
 ```json
 { "status": "CLASSIFICATION_STARTING" }
 ```
